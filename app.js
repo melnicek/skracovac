@@ -1,5 +1,5 @@
 const express = require('express');
-const connectDB = require("./config/db");
+const connectDB = require("./db");
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use("/admin", require("./routes/admin"));
 app.use("/", require("./routes/index"));
 app.use("/api/url", require("./routes/url"));
 
-const PORT =  process.env.PORT || config.get("port");
+const PORT =  process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log("Ryby utekajú na porte: "+PORT)
