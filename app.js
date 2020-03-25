@@ -15,7 +15,7 @@ app.use("/admin", require("./routes/admin"));
 app.use("/", require("./routes/index"));
 app.use("/api/url", require("./routes/url"));
 
-const PORT =  process.env.PORT || 3000;
+const PORT =  process.env.PORT || config.get("port");
 
 app.listen(PORT, () => {
   console.log("Ryby utekajú na porte: "+PORT)
