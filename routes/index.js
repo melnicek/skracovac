@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+var request = require('request');
 
 const Url = require("../models/url.model");
 const Click = require("../models/click.model");
@@ -11,15 +12,22 @@ router.get("/:shortUrl", async (req, res) => {
     const url = await Url.findOne({ urlCode: req.params.shortUrl });
 
     if (url) {
-      
-      let click = new Click({
-        urlCode:url.urlCode,
-        date: new Date(),
-        ip: req.header('x-forwarded-for') || req.connection.remoteAddress,
-        userAgent: req.headers['user-agent']
-      })
+      request('http://ip-api.com/json/' + (req.header('x-forwarded-for') || req.connection.remoteAddress), function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          const info = JSON.parse(body);
+          console.log(info);
+          let click = new Click({
+            urlCode: url.urlCode,
+            date: new Date(),
+            ip: req.header('x-forwarded-for') || req.connection.remoteAddress,
+            userAgent: req.headers['user-agent'],
+            city: info.city,
+            country: info.country,
+          })
+          click.save();
+        }
+      });
 
-      await click.save();
 
       return res.redirect(url.longUrl);
     } else {

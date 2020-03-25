@@ -17,7 +17,7 @@
   <a href="/admin/list">../</a>
   <% clicks.forEach(click => {%>
     <hr>
-    <h2><%= click.ip %></h2>
+    <h2><%= click.ip %> (<%= click.country %>/<%= click.city %>)</h2>
     <h6><%= click.userAgent %></h6>
     <h6><%= click.date %></h6>
   <%}); %>
